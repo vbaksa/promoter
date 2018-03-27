@@ -1,0 +1,65 @@
+hash: 55dd9470d0306e0341e951dcb5b1b0b787cbaedc328aa46faa8ac83c5ed35c11
+updated: 2017-03-06T18:17:55.862432488+02:00
+imports:
+- name: github.com/docker/distribution
+  version: 99cb7c0946d2f5a38015443e515dc916295064d7
+  subpackages:
+  - context
+  - digest
+  - manifest
+  - manifest/schema1
+  - manifest/schema2
+  - reference
+  - uuid
+- name: github.com/docker/libtrust
+  version: aabc10ec26b754e797f9028f4589c5b7bd90dc20
+- name: github.com/dustin/go-humanize
+  version: 259d2a102b871d17f30e3cd9881a642961a1e486
+- name: github.com/gorilla/context
+  version: 14f550f51af52180c2eefed15e5fd18d63c0a64a
+- name: github.com/gorilla/mux
+  version: e444e69cbd2e2e3e0749a2f3c717cec491552bbf
+- name: github.com/gosuri/uilive
+  version: d0940d76630b415cbb002ef3e753ca4fddd3c99f
+- name: github.com/gosuri/uiprogress
+  version: d0567a9d84a1c40dd7568115ea66f4887bf57b33
+  subpackages:
+  - util/strutil
+- name: github.com/heroku/docker-registry-client
+  version: 95467b6cacee2a06f112a3cf7e47a70fad6000cf
+  subpackages:
+  - registry
+- name: github.com/inconshreveable/mousetrap
+  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/mattn/go-isatty
+  version: 9622e0cc9d8f9be434ca605520ff9a16808fee47
+- name: github.com/mattn/go-runewidth
+  version: 14207d285c6c197daabb5c9793d63e7af9ab2d50
+- name: github.com/Sirupsen/logrus
+  version: 55eb11d21d2a31a3cc93838241d04800f52e823d
+  subpackages:
+  - formatters/logstash
+- name: github.com/spf13/cobra
+  version: fcd0c5a1df88f5d6784cb4feead962c3f3d0b66c
+  subpackages:
+  - cobra
+- name: github.com/spf13/pflag
+  version: 9ff6c6923cfffbcd502984b8e0c80539a94968b7
+- name: github.com/spf13/viper
+  version: 7538d73b4eb9511d85a9f1dfef202eeb8ac260f4
+- name: golang.org/x/net
+  version: 4876518f9e71663000c348837735820161a42df7
+  subpackages:
+  - context
+  - context/ctxhttp
+  - http2
+  - http2/hpack
+  - internal/timeseries
+  - trace
+- name: golang.org/x/sys
+  version: e48874b42435b4347fc52bdee0424a52abc974d7
+  subpackages:
+  - unix
+- name: gopkg.in/cheggaaa/pb.v1
+  version: bd1f886442f85613c68401483d34fc7ed9d70ca7
+testImports: []

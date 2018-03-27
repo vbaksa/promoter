@@ -1,0 +1,17 @@
+package: github.com/vbaksa/promoter
+import:
+- package: github.com/heroku/docker-registry-client
+  version: master
+- package: github.com/docker/distribution
+  version: 99cb7c0946d2f5a38015443e515dc916295064d7
+- package: github.com/docker/libtrust
+  version: aabc10ec26b754e797f9028f4589c5b7bd90dc20
+- package: github.com/spf13/cobra
+  subpackages:
+  - cobra
+- package: github.com/spf13/pflag
+  version: 9ff6c6923cfffbcd502984b8e0c80539a94968b7
+- package: github.com/spf13/viper
+- package: github.com/dustin/go-humanize
+- package: gopkg.in/cheggaaa/pb.v1
+  version: ~1.0.9
