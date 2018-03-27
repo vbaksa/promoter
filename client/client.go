@@ -11,6 +11,7 @@ import (
 	"github.com/docker/distribution/digest"
 	"github.com/docker/distribution/manifest"
 	manifestV1 "github.com/docker/distribution/manifest/schema1"
+	"github.com/vbaksa/promoter/progressbar"
 
 	"github.com/docker/libtrust"
 	"github.com/dustin/go-humanize"
@@ -260,7 +261,7 @@ func (pr *Promote) layerExists(destHub *registry.Registry, srcHub *registry.Regi
 func (pr *Promote) uploadLayer(destHub *registry.Registry, srcHub *registry.Registry, layer digest.Digest, totalReader *chan int64) {
 	reader, err := srcHub.DownloadLayer(pr.SrcImage, layer)
 	defer reader.Close()
-	rd := &PassThru{ReadCloser: reader, Total: totalReader}
+	rd := &progressbar.PassThru{ReadCloser: reader, Total: totalReader}
 	destHub.UploadLayer(pr.DestImage, layer, rd)
 	if err != nil {
 		fmt.Println("Error occured while uploading layer: " + layer)
