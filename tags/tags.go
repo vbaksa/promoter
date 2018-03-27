@@ -72,8 +72,8 @@ func (th *TagPush) PushTags() {
 
 	layers := make([]manifestV1.FSLayer, 0)
 	manifests := make([]manifestGetResult, 0)
-
-	poolSize := 20
+	//TO-DO parametrize number of connections
+	poolSize := 5
 
 	manifestGetQueue := tunny.NewFunc(poolSize, func(payload interface{}) interface{} {
 		tag := payload.(string)
@@ -140,7 +140,7 @@ func (th *TagPush) PushTags() {
 			err:   nil,
 		}
 	})
-	layerExistQueue := tunny.NewFunc(10, func(payload interface{}) interface{} {
+	layerExistQueue := tunny.NewFunc(5, func(payload interface{}) interface{} {
 		layerCheck := payload.(*layerCheck)
 		//If previous operation failed then pass layer exist check
 		if layerCheck.err != nil {
