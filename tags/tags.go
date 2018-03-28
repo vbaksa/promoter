@@ -207,19 +207,22 @@ func (th *TagPush) PushTags() {
 	//Get total transfer size
 	var transferSize int64
 	for _, layerCheckResult := range layerCheckResults {
-		transferSize = transferSize + layerCheckResult.size
+		if !layerCheckResult.remoteExist {
+			transferSize = transferSize + layerCheckResult.size
+		}
 	}
 	uploadProgressBar := pb.New64(transferSize * 2).SetUnits(pb.U_BYTES)
 	uploadProgressBar.Start()
 
 	//Submit upload
 	for _, layerCheckResult := range layerCheckResults {
-		if layerCheckResult.err == nil {
+		if layerCheckResult.err == nil && !layerCheckResult.remoteExist {
 			go func(layer manifestV1.FSLayer) {
 				result := uploadQueue.Process(layer)
 				uploadResultChannel <- result.(*uploadResult)
 			}(layerCheckResult.layer)
-		} else {
+		}
+		if layerCheckResult.err!=nil{
 			fmt.Printf("Failed to retrieve layer %s data. Error: %s \n", layerCheckResult.layer.BlobSum, layerCheckResult.err.Error())
 		}
 	}
@@ -232,9 +235,11 @@ func (th *TagPush) PushTags() {
 	}()
 
 	//Collect upload results
-	for i := 0; i < len(uniqueLayers); i++ {
-		res := <-uploadResultChannel
-		uploadResults = append(uploadResults, *res)
+	for _, layerCheckResult := range layerCheckResults {
+		if layerCheckResult.err == nil && !layerCheckResult.remoteExist {
+			res := <-uploadResultChannel
+			uploadResults = append(uploadResults, *res)
+		}
 	}
 	uploadProgressBar.Finish()
 
