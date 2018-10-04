@@ -114,7 +114,17 @@ func (sm *SignedManifest) UnmarshalJSON(b []byte) error {
 
 	jsig, err := libtrust.ParsePrettySignature(b, "signatures")
 	if err != nil {
-		return err
+		// Unmarshal canonical JSON into Manifest object
+		sm.Canonical = make([]byte, len(b), len(b))
+		copy(sm.Canonical, b)
+		var manifest Manifest
+		if err := json.Unmarshal(sm.Canonical, &manifest); err != nil {
+			return err
+		}
+
+		sm.Manifest = manifest
+
+		return nil
 	}
 
 	// Resolve the payload in the manifest.
