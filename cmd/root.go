@@ -185,7 +185,7 @@ func init() {
 	tagsCmd.Flags().StringVar(&tagRegexp, "tag-regexp", "", "Filter image tags by specified regexp")
 }
 
-//Returns registry, image from provided fqdn
+//ImageNameAndRegistry returns registry, image from provided fqdn
 func ImageNameAndRegistry(url string) (registry string, image string, err error) {
 	s := strings.Split(url, "/")
 	if len(s) < 3 {
@@ -197,7 +197,7 @@ func ImageNameAndRegistry(url string) (registry string, image string, err error)
 
 }
 
-//Returns registry, image and tag from provided fqdn
+//ImageNameAndRegistryAndTag returns registry, image and tag from provided fqdn
 func ImageNameAndRegistryAndTag(src string) (registry string, image string, tag string, err error) {
 	s := strings.Split(src, "/")
 	if len(s) < 3 {

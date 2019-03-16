@@ -18,7 +18,7 @@ import (
 	"log"
 )
 
-//Image tags promotion structure
+//TagPush holds image tags promotion structure
 type TagPush struct {
 	SrcRegistry  string
 	SrcImage     string
@@ -53,7 +53,7 @@ type manifestDeployResult struct {
 	err          error
 }
 
-//Promotes all specified image tags.
+//PushTags promotes all specified image tags.
 func (th *TagPush) PushTags() {
 	if !th.Debug {
 		log.SetOutput(ioutil.Discard)

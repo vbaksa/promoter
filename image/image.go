@@ -19,7 +19,7 @@ import (
 	"gopkg.in/cheggaaa/pb.v1"
 )
 
-//Promotion structure used to hold promotion parameters
+//Promote holds promotion structure used to hold promotion parameters
 type Promote struct {
 	SrcRegistry  string
 	SrcImage     string
@@ -36,7 +36,7 @@ type Promote struct {
 	Debug        bool
 }
 
-//Executes specified promotion structure
+//PromoteImage is used to execute specified promotion structure
 func (pr *Promote) PromoteImage() {
 	if !pr.Debug {
 		log.SetOutput(ioutil.Discard)

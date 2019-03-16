@@ -24,7 +24,7 @@ type existingLayer struct {
 	Descriptor distribution.Descriptor
 }
 
-//Computes list of layers required to be uploaded. Upload is optimized by skipping existing layers
+//MissingLayers computes list of layers required to be uploaded. Upload is optimized by skipping existing layers
 func MissingLayers(destHub *registry.Registry, destImage string, srcLayers []manifestV1.FSLayer) []digest.Digest {
 
 	//Layers array returned by function
@@ -94,7 +94,7 @@ func MissingLayers(destHub *registry.Registry, destImage string, srcLayers []man
 	return results
 }
 
-//Returns total upload size
+//DigestSize returns total upload size
 func DigestSize(srcHub *registry.Registry, srcImage string, uploadLayer []digest.Digest) int64 {
 	result := make(chan distribution.Descriptor)
 	for _, layer := range uploadLayer {
@@ -116,12 +116,12 @@ func DigestSize(srcHub *registry.Registry, srcImage string, uploadLayer []digest
 	return total
 }
 
-//Uploads image layer with option to track upload progress
+//UploadLayerWithProgress uploads image layer with option to track upload progress
 func UploadLayer(destHub *registry.Registry, destImage string, srcHub *registry.Registry, srcImage string, layer digest.Digest) {
 	UploadLayerWithProgress(destHub, destImage, srcHub, srcImage, layer, nil)
 }
 
-//Uploads image layer with option to track upload progress
+//UploadLayerWithProgress uploads image layer with option to track upload progress
 func UploadLayerWithProgress(destHub *registry.Registry, destImage string, srcHub *registry.Registry, srcImage string, layer digest.Digest, totalReader *chan int64) {
 	reader, err := srcHub.DownloadLayer(srcImage, layer)
 	defer reader.Close()
