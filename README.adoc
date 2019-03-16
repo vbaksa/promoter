@@ -8,6 +8,7 @@ Image promoter also optimizes image promotion by skipping already existing layer
 
 ## Usage
 
+### Promoting single image
 .Promoting single image
 [source,bash]
 ----
@@ -35,7 +36,7 @@ Flags:
 ----
 
 
-
+### Promoting multiple image tags
 .Promoting multiple image tags
 [source,bash]
 ----
