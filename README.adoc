@@ -2,7 +2,7 @@
 
 image:https://travis-ci.org/vbaksa/promoter.svg?branch=master["Build Status", link="https://travis-ci.org/vbaksa/promoter"] image:https://goreportcard.com/badge/github.com/vbaksa/promoter["Go Report Card", link="https://goreportcard.com/report/github.com/vbaksa/promoter"]
 
-Image Promoter is a tool to promote Docker images between two image registries.
+Image Promoter is a tool to promote Docker images between image registries.
 
 It can promote multiple image versions in one go and does not require Docker to installed or any privileges on the system. It works on Linux, Windows and MacOS.
 
