@@ -17,7 +17,7 @@ Image promoter also optimizes image promotion by skipping already existing layer
 ./promoter push hub.docker.io/library/ubuntu:16.04 localhost:5000/library/ubuntu:16.04
 ----
 
-.Single image promotion parameters
+.Single image promotion options
 ----
  ./promoter push --help
 Push image from one Registry into another one
@@ -52,7 +52,7 @@ Flags:
 ----
 
 
-.Multi image promotion parameters
+.Multi image promotion options
 ----
  ./promoter tags --help
 Push all image tags from one Registry into another one

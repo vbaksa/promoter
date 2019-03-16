@@ -4,6 +4,27 @@ go:
   - "1.10.x"
   - master
 
-# Skip the install step. Don't `go get` dependencies. Only build with the
-# code in vendor/
-install: true
+# before we deploy, we go build for all operating systems we would like to support
+before_deploy:
+  - mkdir -p release
+  - "git rev-parse --short HEAD"
+  - "GOOS=linux  GOARCH=amd64 go build -ldflags \"-X github.com/vbaksa/promoter/cmd.version=$TRAVIS_TAG\" -o release/promoter-v$TRAVIS_TAG-linux-amd64"
+  - "GOOS=linux  GOARCH=arm GOARM=5 go build -ldflags \"-X github.com/vbaksa/promoter/cmd.version=$TRAVIS_TAG\" -o release/promoter-v$TRAVIS_TAG-linux-arm"
+  - "GOOS=darwin GOARCH=amd64 go build -ldflags \"-X github.com/vbaksa/promoter/cmd.version=$TRAVIS_TAG\" -o release/promoter-v$TRAVIS_TAG-darwin-amd64"
+  - "GOOS=windows GOARCH=amd64 go build -ldflags \"-X github.com/vbaksa/promoter/cmd.version=$TRAVIS_TAG\" -o release/promoter-v$TRAVIS_TAG-windows"
+
+# this tells travis-ci to create a github release and deploy artifacts to
+# github _only_ when there is a tag associated with a commit. That is what the tags: true means.
+# You can setup this section really easily by doing `$ travis setup releases`
+deploy:
+  provider: releases
+  api_key:
+    secure: Dc0RKf02YkBRmDojzX1JeBQTF09IBjMTUw5zIBYg47WHVIT0bBAca8K32QVSfQMnA8Sy3P9LC92ntPxi4ceoksg3G3HRHZiSNK5crAmcraDFC5Kc2p/1jNtwp0GEQcNydzSLhiv8heRaF7qOtEWMskeI2HqQpT/0xnyu2xTDdzZG0gHTo/lsrlZTehMhnHW7V7oAJrB3eSlGCIomjYkJjacyPfcKLz37O5U0So0os3N2PrigteBEtTfw1OUUtkepgmkcUbXhsNm2D6/zLFFpQncIUjpvqC6FfWZ0+dwn2kboHi7fOpzRdpjUTJ/7U63meip+tJP7cYQTbaz1dKYtbZl09N/gdVId8f63J/6MqyQNx4BD1HZwJ5rdvNO8y20/bhqzmByoMnNLi4qg1A6JSxFbeg5LHZnd1kMlYEDMhrcfZF/c9kkGE58FKHfd14WLvJpuLHsJkVCBPWdz8YDYJlcrhnxq24lfE/B7ztLttd8x6YB7bu9H2Z9U6OSDXI4Jtyacn/rCZ5aoB1xfdQEWG5AOyezo8exMDp0vuccK0Cx+WmYF4siBkX7LXMDPSoNLP8/okK3epingLFT5OOPEZ5pxpCIeF3EIkWqTJtGb7qMMlTw1culea/5MjSuBZ8yX/+8pzpK9J//LszWf/R6xj2gb0yT708nKz116I14YjCU=
+  file:
+    - "release/promoter-v$TRAVIS_TAG-linux-amd64"
+    - "release/promoter-v$TRAVIS_TAG-linux-arm"
+    - "release/promoter-v$TRAVIS_TAG-darwin-amd64"
+    - "release/promoter-v$TRAVIS_TAG-windows"
+  skip_cleanup: true
+  on:
+    tags: true

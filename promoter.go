@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-	"os"
-
 	"github.com/vbaksa/promoter/cmd"
+	"os"
 )
 
 func main() {

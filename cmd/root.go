@@ -15,6 +15,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	version = "DEV"
+)
+
 // RootCmd provides CLI handler for the application
 var RootCmd = &cobra.Command{
 	Use:   "promoter",
@@ -44,7 +48,7 @@ func init() {
 		Short: "Print the version number",
 		Long:  `Print the version number`,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Version 1.0.1")
+			fmt.Println(version)
 		},
 	}
 	var promoteCmd = &cobra.Command{
