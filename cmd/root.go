@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"os"
@@ -36,6 +37,7 @@ func init() {
 	var destInsecure bool
 	var srcHTTP bool
 	var destHTTP bool
+	var tagRegexp string
 
 	var versionCmd = &cobra.Command{
 		Use:   "version",
@@ -130,6 +132,12 @@ func init() {
 			} else {
 				addRegistryProtocol(&destRegistry, true)
 			}
+			if len(tagRegexp) > 0 {
+				_, err = regexp.Compile(tagRegexp)
+				if err != nil {
+					fmt.Println("Image Tag Regexp does not compile. Error: %q", err)
+				}
+			}
 
 			prom := &tags.TagPush{
 				SrcRegistry:  srcRegistry,
@@ -142,6 +150,7 @@ func init() {
 				DestUsername: destUsername,
 				DestPassword: destPassword,
 				DestInsecure: destInsecure,
+				TagRegexp:    tagRegexp,
 				Debug:        debug,
 			}
 			prom.PushTags()
@@ -161,8 +170,7 @@ func init() {
 	promoteCmd.Flags().BoolVar(&destHTTP, "dest-http", false, "Use http when connecting to Source Registry")
 	promoteCmd.Flags().BoolVarP(&debug, "debug", "d", false, "Debug")
 	promoteCmd.Flags().BoolVar(&srcInsecure, "src-insecure", false, "Accept all certificates when connecting to Source Registry")
-	promoteCmd.Flags().BoolVar(&destInsecure, "dest-insecure", false, "Accept all certificatesp when connecting to Destination Registry")
-
+	promoteCmd.Flags().BoolVar(&destInsecure, "dest-insecure", false, "Accept all certificates when connecting to Destination Registry")
 	tagsCmd.Flags().StringVar(&srcUsername, "src-username", "", "Source username")
 	tagsCmd.Flags().StringVar(&srcPassword, "src-password", "", "Source password")
 	tagsCmd.Flags().StringVar(&destUsername, "dest-username", "", "Destination username")
@@ -173,24 +181,27 @@ func init() {
 	tagsCmd.Flags().BoolVarP(&debug, "debug", "d", false, "Debug")
 
 	tagsCmd.Flags().BoolVar(&srcInsecure, "src-insecure", false, "Accept all certificates when connecting to Source Registry")
-	tagsCmd.Flags().BoolVar(&destInsecure, "dest-insecure", false, "Accept all certificatesp when connecting to Destination Registry")
-
+	tagsCmd.Flags().BoolVar(&destInsecure, "dest-insecure", false, "Accept all certificates when connecting to Destination Registry")
+	tagsCmd.Flags().StringVar(&tagRegexp, "tag-regexp", "", "Filter image tags by specified regexp")
 }
 
+//Returns registry, image from provided fqdn
 func ImageNameAndRegistry(url string) (registry string, image string, err error) {
 	s := strings.Split(url, "/")
 	if len(s) < 3 {
-		return "", "", errors.New("Invalid image reference. Image format should be following: [registry/repository/image] e.g. myregistry/repository/centos")
+		return "", "", errors.New("invalid image reference. Image format should be following: [registry/repository/image] e.g. myregistry/repository/centos")
 	}
 	registry = s[0]
 	image = s[1] + "/" + s[2]
 	return registry, image, nil
 
 }
+
+//Returns registry, image and tag from provided fqdn
 func ImageNameAndRegistryAndTag(src string) (registry string, image string, tag string, err error) {
 	s := strings.Split(src, "/")
 	if len(s) < 3 {
-		return "", "", "", errors.New("Invalid image reference. Image format should be following: [registry/repository/image] e.g. hub.docker.io/library/centos")
+		return "", "", "", errors.New("invalid image reference. Image format should be following: [registry/repository/image] e.g. hub.docker.io/library/centos")
 
 	}
 	registry = s[0]

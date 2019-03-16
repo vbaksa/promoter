@@ -14,6 +14,7 @@ type connectionResult struct {
 	err     error
 }
 
+//Initializes connections to specified registries
 func InitConnection(srcRegistry string, srcUsername string, srcPassword string, srcInsecure bool, destRegistry string, destUsername string, destPassword string, destInsecure bool) (*registry.Registry, *registry.Registry) {
 	fmt.Println("Establishing connections...")
 	var srcHub *registry.Registry

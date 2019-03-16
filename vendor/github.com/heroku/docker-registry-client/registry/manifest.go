@@ -30,7 +30,6 @@ func (registry *Registry) Manifest(repository, reference string) (*manifestV1.Si
 	if err != nil {
 		return nil, err
 	}
-
 	signedManifest := &manifestV1.SignedManifest{}
 	err = signedManifest.UnmarshalJSON(body)
 	if err != nil {

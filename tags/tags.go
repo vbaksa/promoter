@@ -2,21 +2,23 @@ package tags
 
 import (
 	"fmt"
+	"regexp"
 
 	"os"
 
 	manifestV1 "github.com/docker/distribution/manifest/schema1"
 
-	"github.com/vbaksa/promoter/connection"
 	"github.com/Jeffail/tunny"
-	"gopkg.in/cheggaaa/pb.v1"
-	"log"
-	"io/ioutil"
-	"github.com/vbaksa/promoter/progressbar"
-	"github.com/docker/libtrust"
 	"github.com/docker/distribution/manifest"
+	"github.com/docker/libtrust"
+	"github.com/vbaksa/promoter/connection"
+	"github.com/vbaksa/promoter/progressbar"
+	"gopkg.in/cheggaaa/pb.v1"
+	"io/ioutil"
+	"log"
 )
 
+//Image tags promotion structure
 type TagPush struct {
 	SrcRegistry  string
 	SrcImage     string
@@ -28,6 +30,7 @@ type TagPush struct {
 	DestUsername string
 	DestPassword string
 	DestInsecure bool
+	TagRegexp    string
 	Debug        bool
 }
 type manifestGetResult struct {
@@ -50,6 +53,7 @@ type manifestDeployResult struct {
 	err          error
 }
 
+//Promotes all specified image tags.
 func (th *TagPush) PushTags() {
 	if !th.Debug {
 		log.SetOutput(ioutil.Discard)
@@ -58,7 +62,6 @@ func (th *TagPush) PushTags() {
 	srcHub, destHub := connection.InitConnection(th.SrcRegistry, th.SrcUsername, th.SrcPassword, th.SrcInsecure, th.DestRegistry, th.DestUsername, th.DestPassword, th.DestInsecure)
 	fmt.Println("Source Image: " + th.SrcImage)
 	fmt.Println("Destination image: " + th.DestImage)
-
 	tags, err := srcHub.Tags(th.SrcImage)
 	if err != nil {
 		fmt.Println("Error occured while trying to get Source Image Tags")
@@ -69,6 +72,20 @@ func (th *TagPush) PushTags() {
 	totalTags := len(tags)
 
 	fmt.Printf("Source image contains %d tags\n", totalTags)
+
+	if len(th.TagRegexp) > 0 {
+		tags, err = filterByVersionSelector(tags, th.TagRegexp)
+		if err != nil {
+			fmt.Println("Failed to filter by provided Tag regexp. Error: %q", err)
+			os.Exit(1)
+		} else {
+			fmt.Printf("Tag regexp matched %d images \n", len(tags))
+		}
+		if len(tags) == 0 {
+			fmt.Println("Image Tag Regexp didn't matched any tags")
+			os.Exit(1)
+		}
+	}
 
 	layers := make([]manifestV1.FSLayer, 0)
 	manifests := make([]manifestGetResult, 0)
@@ -173,7 +190,7 @@ func (th *TagPush) PushTags() {
 	}
 	layerCheckProgressBar.Finish()
 
-	fmt.Println("Transfering layers...")
+	fmt.Println("Transferring layers...")
 	var totalReader = make(chan int64)
 	uploadResultChannel := make(chan *uploadResult)
 	uploadResults := make([]uploadResult, 0)
@@ -222,7 +239,7 @@ func (th *TagPush) PushTags() {
 				uploadResultChannel <- result.(*uploadResult)
 			}(layerCheckResult.layer)
 		}
-		if layerCheckResult.err!=nil{
+		if layerCheckResult.err != nil {
 			fmt.Printf("Failed to retrieve layer %s data. Error: %s \n", layerCheckResult.layer.BlobSum, layerCheckResult.err.Error())
 		}
 	}
@@ -324,4 +341,18 @@ func appendIfMissing(slice []manifestV1.FSLayer, i manifestV1.FSLayer) []manifes
 		}
 	}
 	return append(slice, i)
+}
+func filterByVersionSelector(tags []string, filter string) (tagsFiltered []string, err error) {
+
+	filteredTags := make([]string, 0)
+	r, err := regexp.Compile(filter)
+	if err == nil {
+		for _, tag := range tags {
+			match := r.MatchString(tag)
+			if match {
+				filteredTags = append(filteredTags, tag)
+			}
+		}
+	}
+	return filteredTags, err
 }

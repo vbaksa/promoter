@@ -1,0 +1,71 @@
+# Docker Image Promoter
+
+Image Promoter is a tool to promote Docker images between two image registries.
+
+It can promote multiple image versions in one go and does not require Docker to installed or any privileges on the system. It works on Linux, Windows and MacOS.
+
+Image promoter also optimizes image promotion by skipping already existing layers. It transfers image on the fly, so it does not consume additional disk space.
+
+## Usage
+
+.Promoting single image
+[source,bash]
+----
+./promoter push hub.docker.io/library/ubuntu:16.04 localhost:5000/library/ubuntu:16.04
+----
+
+.Single image promotion parameters
+----
+ ./promoter push --help
+Push image from one Registry into another one
+
+Usage:
+  promoter push [registry/image/tag] [registry/image/tag] [flags]
+
+Flags:
+  -d, --debug                  Debug
+      --dest-http              Use http when connecting to Source Registry
+      --dest-insecure          Accept all certificates when connecting to Destination Registry
+      --dest-password string   Destination password
+      --dest-username string   Destination username
+      --src-http               Use http when connecting to Source Registry
+      --src-insecure           Accept all certificates when connecting to Source Registry
+      --src-password string    Source password
+      --src-username string    Source username
+----
+
+
+
+.Promoting multiple image tags
+[source,bash]
+----
+./promoter tags hub.docker.io/library/ubuntu localhost:5000/library/ubuntutest
+----
+
+.Promoting multiple image tags with filter
+[source,bash]
+----
+./promoter tags tags hub.docker.io/library/ubuntu localhost:5000/library/ubuntutest --dest-http --tag-regexp="18"
+----
+
+
+.Multi image promotion parameters
+----
+ ./promoter tags --help
+Push all image tags from one Registry into another one
+
+Usage:
+  promoter tags [registry/image] [registry/image] [flags]
+
+Flags:
+  -d, --debug                  Debug
+      --dest-http              Use http when connecting to Source Registry
+      --dest-insecure          Accept all certificates when connecting to Destination Registry
+      --dest-password string   Destination password
+      --dest-username string   Destination username
+      --src-http               Use http when connecting to Source Registry
+      --src-insecure           Accept all certificates when connecting to Source Registry
+      --src-password string    Source password
+      --src-username string    Source username
+      --tag-regexp string      Filter image tags by specified regexp
+----

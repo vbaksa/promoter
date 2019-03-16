@@ -19,6 +19,7 @@ import (
 	"gopkg.in/cheggaaa/pb.v1"
 )
 
+//Promotion structure used to hold promotion parameters
 type Promote struct {
 	SrcRegistry  string
 	SrcImage     string
@@ -35,6 +36,7 @@ type Promote struct {
 	Debug        bool
 }
 
+//Executes specified promotion structure
 func (pr *Promote) PromoteImage() {
 	if !pr.Debug {
 		log.SetOutput(ioutil.Discard)
@@ -111,7 +113,7 @@ func (pr *Promote) PromoteImage() {
 	}
 	signedManifest, err := manifestV1.Sign(manifest, key)
 	if err != nil {
-		fmt.Println("Error occured while Signing Image Manifest")
+		fmt.Println("Error occurred while Signing Image Manifest")
 		fmt.Println("Error: " + err.Error())
 		os.Exit(1)
 	}

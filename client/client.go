@@ -119,7 +119,7 @@ func (pr *Promote) PromoteImage() {
 	fmt.Println("Generating Signing Key...")
 	key, err := libtrust.GenerateECP256PrivateKey()
 	if err != nil {
-		fmt.Println("Error occured while generating Image Key")
+		fmt.Println("Error occurred while generating Image Key")
 		fmt.Println("Error: " + err.Error())
 		os.Exit(1)
 	}
@@ -140,10 +140,9 @@ func (pr *Promote) PromoteImage() {
 	}
 	signedManifest, err := manifestV1.Sign(manifest, key)
 	if err != nil {
-		fmt.Println("Error occured while Signing Image Manifest")
+		fmt.Println("Error occurred while Signing Image Manifest")
 		fmt.Println("Error: " + err.Error())
 		os.Exit(1)
-		fmt.Println(signedManifest)
 	}
 
 	fmt.Println("Submitting Image Manifest")
@@ -264,7 +263,7 @@ func (pr *Promote) uploadLayer(destHub *registry.Registry, srcHub *registry.Regi
 	rd := &progressbar.PassThru{ReadCloser: reader, Total: totalReader}
 	destHub.UploadLayer(pr.DestImage, layer, rd)
 	if err != nil {
-		fmt.Println("Error occured while uploading layer: " + layer)
+		fmt.Println("Error occurred while uploading layer: " + layer)
 		os.Exit(1)
 	}
 }
