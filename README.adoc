@@ -45,13 +45,13 @@ Flags:
 .Promoting multiple image tags
 [source,bash]
 ----
-./promoter tags hub.docker.io/library/ubuntu localhost:5000/library/ubuntutest
+./promoter tags hub.docker.io/library/ubuntu localhost:5000/library/ubuntu
 ----
 
 .Promoting multiple image tags with filter
 [source,bash]
 ----
-./promoter tags tags hub.docker.io/library/ubuntu localhost:5000/library/ubuntutest --dest-http --tag-regexp="18"
+./promoter tags tags hub.docker.io/library/ubuntu localhost:5000/library/ubuntu --dest-http --tag-regexp="18"
 ----
 
 
