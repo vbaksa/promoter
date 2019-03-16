@@ -58,7 +58,7 @@ func (pr *Promote) PromoteImage() {
 	if len(uploadLayer) > 0 {
 		totalDownloadSize := layer.DigestSize(srcHub, pr.SrcImage, uploadLayer)
 		fmt.Println()
-		fmt.Printf("Going to upload around %s of layer data. Expected network bandwith: %s \n", humanize.Bytes(uint64(totalDownloadSize)), humanize.Bytes(uint64(totalDownloadSize*2)))
+		fmt.Printf("Going to upload around %s of layer data. Expected network bandwidth: %s \n", humanize.Bytes(uint64(totalDownloadSize)), humanize.Bytes(uint64(totalDownloadSize*2)))
 		fmt.Println()
 
 		fmt.Println()
@@ -92,7 +92,7 @@ func (pr *Promote) PromoteImage() {
 	fmt.Println("Generating Signing Key...")
 	key, err := libtrust.GenerateECP256PrivateKey()
 	if err != nil {
-		fmt.Println("Error occured while generating Image Key")
+		fmt.Println("Error occurred while generating Image Key")
 		fmt.Println("Error: " + err.Error())
 		os.Exit(1)
 	}

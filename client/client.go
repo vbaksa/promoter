@@ -19,6 +19,7 @@ import (
 	"gopkg.in/cheggaaa/pb.v1"
 )
 
+//Promote holds single image promotions structure
 type Promote struct {
 	SrcRegistry  string
 	SrcImage     string
@@ -35,6 +36,7 @@ type Promote struct {
 	Debug        bool
 }
 
+//PromoteImage executes single image promotion
 func (pr *Promote) PromoteImage() {
 	if !pr.Debug {
 		log.SetOutput(ioutil.Discard)
@@ -42,7 +44,7 @@ func (pr *Promote) PromoteImage() {
 	fmt.Println("Connecting to Source registry")
 	var srcHub *registry.Registry
 	var destHub *registry.Registry
-	var err error = nil
+	var err error
 	if pr.SrcInsecure {
 		srcHub, err = registry.NewInsecure(pr.SrcRegistry, pr.SrcUsername, pr.SrcPassword)
 
@@ -84,7 +86,7 @@ func (pr *Promote) PromoteImage() {
 	totalDownloadSize := pr.getTotalDownloadSize(srcHub, uploadLayer)
 	if len(uploadLayer) > 0 {
 		fmt.Println()
-		fmt.Printf("Going to upload around %s of layer data. Expected network bandwith: %s \n", humanize.Bytes(uint64(totalDownloadSize)), humanize.Bytes(uint64(totalDownloadSize*2)))
+		fmt.Printf("Going to upload around %s of layer data. Expected network bandwidth: %s \n", humanize.Bytes(uint64(totalDownloadSize)), humanize.Bytes(uint64(totalDownloadSize*2)))
 		fmt.Println()
 
 		fmt.Println()
@@ -250,7 +252,7 @@ func (pr *Promote) layerExists(destHub *registry.Registry, srcHub *registry.Regi
 	}
 	fmt.Println()
 	if totalSaved > 100 {
-		fmt.Printf("Some layers already exist on Remote Registry. Skipping around %s of layer data. Total network bandwith saved: %s \n", humanize.Bytes(uint64(totalSaved)), humanize.Bytes(uint64(totalSaved*2)))
+		fmt.Printf("Some layers already exist on Remote Registry. Skipping around %s of layer data. Total network bandwidth saved: %s \n", humanize.Bytes(uint64(totalSaved)), humanize.Bytes(uint64(totalSaved*2)))
 	}
 	fmt.Println()
 

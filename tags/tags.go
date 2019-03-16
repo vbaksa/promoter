@@ -64,7 +64,7 @@ func (th *TagPush) PushTags() {
 	fmt.Println("Destination image: " + th.DestImage)
 	tags, err := srcHub.Tags(th.SrcImage)
 	if err != nil {
-		fmt.Println("Error occured while trying to get Source Image Tags")
+		fmt.Println("Error occurred while trying to get Source Image Tags")
 		fmt.Println("Error: " + err.Error())
 		os.Exit(1)
 	}
@@ -76,7 +76,7 @@ func (th *TagPush) PushTags() {
 	if len(th.TagRegexp) > 0 {
 		tags, err = filterByVersionSelector(tags, th.TagRegexp)
 		if err != nil {
-			fmt.Println("Failed to filter by provided Tag regexp. Error: %q", err)
+			fmt.Printf("Failed to filter by provided Tag regexp. Error: %q \n", err)
 			os.Exit(1)
 		} else {
 			fmt.Printf("Tag regexp matched %d images \n", len(tags))
@@ -208,10 +208,10 @@ func (th *TagPush) PushTags() {
 			err2 = destHub.UploadLayer(th.DestImage, upload.BlobSum, reader)
 		}
 		if err != nil {
-			fmt.Printf("Error occured while uploading layer:  %s. Error: %s \n", upload.BlobSum, err.Error())
+			fmt.Printf("Error occurred while uploading layer:  %s. Error: %s \n", upload.BlobSum, err.Error())
 		}
 		if err2 != nil {
-			fmt.Printf("Error occured while uploading layer:  %s. Error: %s \n", upload.BlobSum, err2.Error())
+			fmt.Printf("Error occurred while uploading layer:  %s. Error: %s \n", upload.BlobSum, err2.Error())
 		}
 
 		return &uploadResult{

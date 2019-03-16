@@ -87,7 +87,7 @@ func MissingLayers(destHub *registry.Registry, destImage string, srcLayers []man
 	}
 	fmt.Println()
 	if totalSaved > 100 {
-		fmt.Printf("Some layers already exist on Remote Registry. Skipping around %s of layer data. Total network bandwith saved: %s \n", humanize.Bytes(uint64(totalSaved)), humanize.Bytes(uint64(totalSaved*2)))
+		fmt.Printf("Some layers already exist on Remote Registry. Skipping around %s of layer data. Total network bandwidth saved: %s \n", humanize.Bytes(uint64(totalSaved)), humanize.Bytes(uint64(totalSaved*2)))
 	}
 	fmt.Println()
 
@@ -116,7 +116,7 @@ func DigestSize(srcHub *registry.Registry, srcImage string, uploadLayer []digest
 	return total
 }
 
-//UploadLayerWithProgress uploads image layer with option to track upload progress
+//UploadLayer uploads image layer with option to track upload progress
 func UploadLayer(destHub *registry.Registry, destImage string, srcHub *registry.Registry, srcImage string, layer digest.Digest) {
 	UploadLayerWithProgress(destHub, destImage, srcHub, srcImage, layer, nil)
 }

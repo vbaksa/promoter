@@ -135,7 +135,7 @@ func init() {
 			if len(tagRegexp) > 0 {
 				_, err = regexp.Compile(tagRegexp)
 				if err != nil {
-					fmt.Println("Image Tag Regexp does not compile. Error: %q", err)
+					fmt.Printf("Image Tag Regexp does not compile. Error: %q \n", err)
 				}
 			}
 
