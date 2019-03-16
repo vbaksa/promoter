@@ -8,7 +8,10 @@ It can promote multiple image versions in one go and does not require Docker to 
 
 Image promoter also optimizes image promotion by skipping already existing layers. It transfers image on the fly, so it does not consume additional disk space.
 
+
 ## Usage
+
+Download latest version here - https://github.com/vbaksa/promoter/releases
 
 ### Promoting single image
 .Promoting single image
