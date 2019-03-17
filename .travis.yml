@@ -9,7 +9,6 @@ install: true
 # before we deploy, we go build for all operating systems we would like to support
 before_deploy:
   - mkdir -p release
-  - "git rev-parse --short HEAD"
   - "GOOS=linux  GOARCH=amd64 go build -ldflags \"-X github.com/vbaksa/promoter/cmd.version=$TRAVIS_TAG\" -o release/promoter-$TRAVIS_TAG-linux-amd64"
   - "GOOS=linux  GOARCH=arm GOARM=5 go build -ldflags \"-X github.com/vbaksa/promoter/cmd.version=$TRAVIS_TAG\" -o release/promoter-$TRAVIS_TAG-linux-arm"
   - "GOOS=darwin GOARCH=amd64 go build -ldflags \"-X github.com/vbaksa/promoter/cmd.version=$TRAVIS_TAG\" -o release/promoter-$TRAVIS_TAG-darwin-amd64"
