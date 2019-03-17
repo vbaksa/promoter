@@ -42,7 +42,7 @@ Flags:
 
 
 ### Promoting multiple image tags
-.Promoting multiple image tags
+.Promoting ALL image tags
 [source,bash]
 ----
 ./promoter tags hub.docker.io/library/ubuntu localhost:5000/library/ubuntu
