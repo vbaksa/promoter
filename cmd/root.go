@@ -209,7 +209,9 @@ func ImageNameAndRegistryAndTag(src string) (registry string, image string, tag 
 
 	}
 	registry = s[0]
-	image = s[1] + "/" + s[2]
+
+	image = strings.Join(s[1:], "/")
+
 	imageAndTag := strings.Split(image, ":")
 	//Image name and tag specified
 	if len(imageAndTag) > 1 {
